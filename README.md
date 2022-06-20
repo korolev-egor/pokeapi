@@ -25,7 +25,7 @@ Folder contains DAGs and required functions.
 
 - **korolev_check_dag.py**
 
-Defiles DAG that gets number of generations and prints it in airflow logs.
+Defiles DAG that gets number of generations daily and prints it in airflow logs.
 
 - **korolev_fetch_dag.py**
 
