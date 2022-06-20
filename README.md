@@ -2,7 +2,7 @@
 ```bash
 ├── README.md
 ├── airflow
-│   ├── korolev_check_dag.py
+│   ├── korolev_check_generations_dag.py
 │   ├── korolev_fetch_dag.py
 │   └── utils
 │       ├── korolev_classes.py
@@ -23,7 +23,7 @@
 ## airflow
 Folder contains DAGs and required functions.
 
-- **korolev_check_dag.py**
+- **korolev_check_generations_dag.py**
 
 Defiles DAG that gets number of generations daily and prints it in airflow logs.
 
