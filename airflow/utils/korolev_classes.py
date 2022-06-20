@@ -37,10 +37,9 @@ class PokeAPIParser(abc.ABC):
         """List of sequences of JSON keys separated by dot symbol."""
         raise NotImplementedError
 
-    def _get_value(self, path: str, json: Dict, res: Dict) -> None:
+    def _update_value(self, path: str, json: Dict, res: Dict) -> None:
         """
-        # Insert to `res` values from `json` based on `path`.
-        Recursively find all values by ``path`` from ``json`` and put them in `res`.
+        Recursively update `res` dictionary with values by `path` from `json`.
 
         Changes `res` dictionary in place.
         Path must be a string containing sequence of string keys
@@ -74,12 +73,12 @@ class PokeAPIParser(abc.ABC):
         if isinstance(json, dict):
             if res.get(key) is None:
                 res[key] = dict()
-            self._get_value('.'.join(keys), json, res[key])
+            self._update_value('.'.join(keys), json, res[key])
         elif isinstance(json, list):
             if res.get(key) is None:
                 res[key] = [dict() for _ in json]
             for index, item in enumerate(json):
-                self._get_value('.'.join(keys), item, res[key][index])
+                self._update_value('.'.join(keys), item, res[key][index])
         else:
             if key == 'url':
                 res['id'] = int(json.split('/')[-2])  # save id as int to save space
@@ -92,7 +91,7 @@ class PokeAPIParser(abc.ABC):
         res['id'] = json['id']
         res['name'] = json['name']
         for path in self.PATHS:
-            self._get_value(path, json, res)
+            self._update_value(path, json, res)
         return res
 
     def _get_json_content(self, url: str) -> Dict:
