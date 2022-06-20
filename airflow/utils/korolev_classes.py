@@ -94,16 +94,12 @@ class PokeAPIParser(abc.ABC):
             self._update_value(path, json, res)
         return res
 
-    def _get_json_content(self, url: str) -> Dict:
-        """Send `Get` request and get dictionary from response."""
-        return requests.get(url).json()
-
     def _fetch_resource(self, offset: int, limit: int) -> Optional[str]:
         """Fetch from list of available NamedAPIResources by endpoint.
         NamedAPIResource is dict that contain two keys: `name` and `url`.
         NamedAPIResource is put in `unprocessed_resources` queue."""
         url = f'{self.poke_api_url}{self.ENDPOINT}?limit={limit}&offset={offset}'
-        content = self._get_json_content(url)
+        content = requests.get(url).json()
         for resource in content['results']:
             self.unprocessed_resources.put(resource)
         return content['next']
@@ -141,7 +137,7 @@ class PokeAPIParser(abc.ABC):
                 resource = self.unprocessed_resources.get(block=False)
             except queue.Empty:
                 return
-            content = self._get_json_content(resource['url'])
+            content = requests.get(resource['url']).json()
             parsed_content = self.parse_json(content)
             self.processed_resources.put(parsed_content)
 
