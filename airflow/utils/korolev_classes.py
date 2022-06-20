@@ -99,7 +99,7 @@ class PokeAPIParser(abc.ABC):
         return requests.get(url).json()
 
     def _fetch_resource(self, offset: int, limit: int) -> Optional[str]:
-        """Fetch from list of available NamedAPIResources for that API.
+        """Fetch from list of available NamedAPIResources by endpoint.
         NamedAPIResource is dict that contain two keys: `name` and `url`.
         NamedAPIResource is put in `unprocessed_resources` queue."""
         url = f'{self.poke_api_url}{self.ENDPOINT}?limit={limit}&offset={offset}'
